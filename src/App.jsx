@@ -90,53 +90,290 @@ function buildClaudePrompt(form, voiceId) {
   const researchBlock = form.researchPaste.trim()
     ? `\n\n--- PERPLEXITY RESEARCH (use this heavily) ---\n${form.researchPaste.trim()}\n--- END RESEARCH ---`
     : "";
-  return `You are a senior travel advisor at Point Me to Paradise Travel. Write a complete, personal, concierge-level property guide directly to the client about ${propFull}.
+  return `You are a senior travel advisor at Point Me to Paradise Travel. Write a practical, scannable, concierge-level property guide for the client. This is a reference guide — not a story. The client should be able to open any section and instantly find what they need without reading it cover to cover.
 
 WRITING VOICE:
 ${voice.prompt}
+Express the voice in section opening lines and personal hooks — not in long paragraphs. Keep the voice present but efficient.
 
-Always write in first-person from the advisor to the client. Use "you" and "your" throughout. Pull specific room names, restaurant names, pool details, service tips, and insider knowledge from the research provided.
+FORMAT RULES — follow these exactly:
+- Write in first-person from advisor to client. Use "you" and "your."
+- Every section opens with 1 to 2 sentences of personal framing — then go straight into structured, scannable content
+- Use bullet points for all lists: room tips, dining picks, activities, packing items
+- Bold the key info in every bullet — name, dish, tip, critical fact — so the eye goes straight to it
+- Keep bullets tight: 1 to 3 lines each. Lead with the name or fact, follow with the why
+- Short paragraphs only — 2 to 3 sentences max anywhere prose appears
+- No long wind-ups. No flowery transitions. No filler sentences.
+- All research detail must be preserved — organized for fast reading, not compressed or summarized
 
-OUTPUT STRUCTURE — use these exact section headers:
+OUTPUT STRUCTURE — use these exact section headers in this exact order:
 
 # A Personal Note
-Warm intro. Use client's name if provided. Reference agent's name naturally. Explain why this property was chosen specifically for them.
+3 to 4 sentences only. Warm, direct, personal. Use the client's name if provided. Reference the agent's name. Tell them exactly why this property was chosen for them. Then stop.
 
 ## Why This Property
-What makes ${prop || "this property"} the right choice — character, atmosphere, design, setting, who it is truly made for.
+2 sentences on the property's essential character and who it is made for. Then quick-reference bullets:
+- **Property type:** [boutique / large resort / overwater / city hotel / etc.]
+- **Best for:** [couples / families / solo / adventure / relaxation]
+- **Vibe:** [one clear line]
+- **Size:** [number of rooms / intimate or large]
+- **Standout feature:** [the one thing that sets it apart]
+- **Awards / recognition:** [if notable]
 
-## Your Room
-Guidance on their room or suite category. What to expect, standout features, views, bathroom details, what to request at check-in, room-specific tips.
+## Your Room — ${form.roomType || "Room & Suite Options"}
+Brief personal line on their category. Then bullets for their room type, plus notes on other categories worth knowing:
+- **[Room/Suite name]:** [size, view, layout, standout features, what's included]
+- **Request at check-in:** [specific room numbers, floors, or orientations worth asking for]
+- **Bathroom:** [tub / shower / outdoor / details]
+- **Upgrade worth it?:** [honest answer]
+- **Avoid:** [any rooms or locations to skip and why]
 
 ## Dining On Property
-Personal walkthrough of every restaurant, bar, and dining experience. Specific dishes to order, best times, reservation tips, honest assessments.
+Brief personal intro — 1 sentence. One bullet per restaurant or bar:
+- **[Name]** — [meal periods], [cuisine/vibe] — Must-order: [specific dishes]. [Reservation needed? Dress code? Best time?]
+
+Include every dining venue. Add a quick note on:
+- **Breakfast:** [buffet / a la carte / included in rate?]
+- **Room service:** [available / quality / worth it?]
 
 ## The Pool & Beach
-Everything they need — layout, chair strategy, best spots, timing, cabana options, swim-up bars, water quality, hidden outdoor gems.
+1 sentence intro. Then bullets:
+- **Pool situation:** [how many, what type, best one and why]
+- **Beach:** [private / semi-private / shared — quality, access, what to expect]
+- **Chair strategy:** [how to secure chairs — time, reservation, butler]
+- **Cabanas:** [available / cost / how to book]
+- **Best kept secret:** [the spot most guests miss]
+- **Adults-only areas:** [yes/no and where]
+- **Water quality:** [clarity, conditions, seasonal notes]
 
 ## Spa, Fitness & Wellness
-What the spa offers, which treatments to book and how far ahead, fitness facilities, wellness programming.
+Brief intro. Bullets:
+- **Spa highlights:** [signature treatments, thermal circuit, standout facilities]
+- **Must-book treatment:** [specific recommendation and why] — book [X days] in advance
+- **Fitness:** [gym quality, hours, classes available]
+- **Wellness programming:** [yoga, meditation, classes — schedule and cost]
+- **Tip:** [one insider note on getting the most from the spa]
 
 ## Activities & Excursions
-What to do on and off property — what is included, what costs extra, what books up fast, personal picks.
+Brief personal intro. Organized as included vs. extra cost:
+
+**Included in your stay:**
+- **[Activity]:** [details]
+
+**Worth the extra cost:**
+- **[Activity/Excursion]:** [cost range, what makes it worth it, book in advance?]
+
+**Off-property picks:**
+- **[Excursion]:** [what it is, how the hotel arranges it, why it's recommended]
 
 ## Service, Tips & Insider Knowledge
-What separates a good stay from a great one — who to contact, pre-arrival requests, tipping norms, check-in and check-out strategies, what the property does not tell you, honest limitations.
+No intro — go straight to bullets:
+- **Pre-arrival:** [what to request before you arrive — pillow menu, amenities, occasions]
+- **Check-in:** [best time, early check-in availability, who to ask]
+- **Check-out:** [late check-out options and how to request]
+- **Tipping:** [norms at this property — amounts and who to tip]
+- **Best staff contact:** [concierge, butler, specific department to reach out to]
+- **Resort fee / extras:** [what is and isn't included in the rate]
+- **Honest limitation:** [one real downside guests should know going in]
+- **Don't miss:** [one thing most guests overlook]
 
 ## A Final Word
-Warm, personal close. Reinforce why this property is right for them. Mention Point Me to Paradise Travel. Sign off with agent's name if provided.
+3 to 4 sentences. Warm, personal close. Reinforce why this property is right for them and how much care went into the recommendation. Mention Point Me to Paradise Travel. Sign off with the agent's name if provided.
 
-RULES:
-- Flowing narrative paragraphs — not bullet lists
-- Specific — use real room names, real dish names, real pool details from the research
-- Every section feels like personal advice, not a brochure
-- Do not use filler phrases like "of course" or "needless to say"
-- Brand every guide for Point Me to Paradise Travel
+STRICT RULES:
+- Never write more than 3 sentences of prose in a row outside the opening note and final word
+- Every recommendation must have its name or topic bolded
+- Every practical detail goes in a bullet — never buried in a sentence
+- Use ALL the research provided — present it in scannable format, not buried in paragraphs
+- Do not pad, do not repeat, do not add filler phrases
+- Brand the guide for Point Me to Paradise Travel
 
 TRIP DETAILS:
 ${details.join("\n")}${researchBlock}
 
-Write the complete property guide now.`;
+Write the complete property guide now.`;t A = {
+  navy:      "#162d42", gold:      "#c9a84c", goldLight: "#f5e9c8",
+  teal:      "#3a9a9a", tealLight: "#e0f5f5", border:    "#ddd5c0",
+  muted:     "#7a6e5f", beige:     "#f5f0e6", cream:     "#faf7f2",
+  red:       "#b83232", redLight:  "#fdecea", slate:     "#f0ebe0",
+  dark:      "#162d42",
+};
+
+const VOICES = [
+  { id: "pmtp", label: "PMTP Voice", icon: "🌴", tagline: "Concierge-level · warm · expert",
+    description: "The signature Point Me to Paradise voice — professional, personal, and deeply knowledgeable. Feels like a trusted advisor who has personally stayed at this property.",
+    prompt: `Write in the signature voice of Point Me to Paradise Travel. Professional yet warm, deeply knowledgeable yet personal — always concierge-level. Like a trusted advisor who has personally stayed at this property and is sharing everything a client needs to know. Expert without being showy. Personal without being casual.` },
+  { id: "morgan", label: "Morgan Freeman", icon: "🎙️", tagline: "Wise · cinematic · deeply moving",
+    description: "Deep, unhurried, and poetic. Rich imagery, timeless observations. Like a warm hand guiding someone toward something beautiful.",
+    prompt: `Write in the style of Morgan Freeman narrating a documentary — deep, unhurried, poetic, and profoundly wise. Use rich imagery and timeless observations about place, hospitality, and the art of rest. The voice should feel like a calm, knowing presence guiding someone toward a truly transformative experience.` },
+  { id: "bourdain", label: "Anthony Bourdain", icon: "🍷", tagline: "Raw · honest · street-level poetry",
+    description: "Unapologetically honest, gritty-poetic, and deeply curious. Celebrates what is real about a property. Never oversells — reveals.",
+    prompt: `Write in the style of Anthony Bourdain — unapologetically honest, gritty-poetic, and deeply curious. Celebrate what is real and extraordinary about this property without overselling it. Talk about the food, the bar, the staff, the feeling of the place at midnight. Write as if you actually stayed there and it meant something.` },
+  { id: "samantha", label: "Samantha Brown", icon: "✈️", tagline: "Warm · enthusiastic · welcoming",
+    description: "Like hotel advice from your most well-traveled best friend bursting with excitement for you. Upbeat, accessible, and encouraging.",
+    prompt: `Write in the style of Samantha Brown — warm, genuinely enthusiastic, and deeply welcoming. Make the client feel like they are getting hotel advice from their most well-traveled best friend who has stayed there and is bursting with excitement for them. Be upbeat, accessible, and encouraging.` },
+  { id: "funny", label: "Funny & Witty", icon: "😄", tagline: "Sharp humor · real insight · Bill Bryson energy",
+    description: "Makes you laugh out loud while still being genuinely useful. Unexpected analogies, perfect comic timing, honest about resort clichés.",
+    prompt: `Write with sharp, clever wit and genuine humor — hotel writing that makes the reader laugh out loud while still being genuinely useful. Gently poke fun at resort tropes while celebrating what genuinely makes this property worth staying at. Be funny but never at the expense of accuracy.` },
+  { id: "mcconaughey", label: "Matthew McConaughey", icon: "🤠", tagline: "Laid back · philosophical · all right all right",
+    description: "Unhurried, sun-soaked, and full of easy wisdom. Finds the deeper meaning in a pool deck. Makes every property feel like somewhere you were always meant to end up.",
+    prompt: `Write in the style of Matthew McConaughey — unhurried, warm, and effortlessly philosophical. Use a laid-back cadence that never rushes, finds meaning in small moments of a hotel stay, and treats the experience of a great property as a journey of the soul. Make it feel sun-drenched and easy.` },
+];
+
+function buildPerplexityPrompt(form) {
+  const prop = form.propertyName.trim();
+  const dest = form.destination.trim();
+  if (!prop && !dest) return null;
+  const propFull = prop && dest ? `${prop} in ${dest}` : prop || dest;
+  const lines = [
+    `You are researching ${propFull} for a luxury concierge property guide. I need guidebook-depth research — thorough, specific, and rich with detail. Do not summarize. Go deep.`,
+    ``,
+    `SOURCES: Draw widely from hotel review blogs, travel blogger stays, guest reviews on TripAdvisor, Google, Booking.com, and Expedia, luxury travel publications (Conde Nast Traveler, Travel + Leisure, Forbes Travel Guide, Fodor's, Frommer's), hotel loyalty forums (TripAdvisor forums, FlyerTalk, View from the Wing), Instagram location tags, YouTube hotel tour videos, the property's own website, and press coverage. Prioritize first-hand guest accounts and travel blogger stays over marketing material.`,
+    ``,
+  ];
+  if (form.travelDates) { lines.push(`Travel dates: ${form.travelDates}.`, ``); }
+  if (form.roomType)    { lines.push(`Room/suite category of interest: ${form.roomType}.`, ``); }
+  lines.push(
+    `Research ALL sections below in full detail:`,
+    ``,
+    `1. PROPERTY OVERVIEW & VIBE`,
+    `Overall character and atmosphere. Who is it best suited for? Design aesthetic and style? Size? What sets it apart? Awards? What guests consistently rave about vs. criticize?`,
+    ``,
+    `2. ROOMS & SUITES`,
+    `Every room and suite category. For each: name, size, layout, view options, standout features, who it is best for. Which categories are worth upgrading? Which rooms or floors to request or avoid? Specific room numbers known for best views? Bathroom details? Bathtub? Bed situation?`,
+    ``,
+    `3. DINING & BARS`,
+    `Every restaurant, bar, cafe on property. For each: name, cuisine, atmosphere, meal periods, signature dishes or drinks, dress code, reservations needed, honest quality assessment. Breakfast situation — included? Room service? Off-menu items worth asking for?`,
+    ``,
+    `4. POOLS, BEACH & OUTDOOR SPACES`,
+    `Number and character of pools. Private, semi-private, or shared beach? Chair situation? Swim-up bars, infinity edges, adults-only areas, kids pools? What time do attendants set up? Cabanas and cost? Water quality? Hidden outdoor spots guests love?`,
+    ``,
+    `5. SPA, FITNESS & WELLNESS`,
+    `Spa facilities — treatment rooms, thermal circuit, steam, sauna, plunge pools? Signature treatments and recommendations? Pricing range. Fitness center. Wellness programming, yoga, meditation, classes? How far in advance to book?`,
+    ``,
+    `6. SERVICE & STAFF`,
+    `Service style — formal, relaxed, butler-led? Concierge team quality? Staff consistently praised? Butler service details? What guests say about check-in, room readiness, how issues are handled? Tips for getting the best service?`,
+    ``,
+    `7. ACTIVITIES, EXCURSIONS & AMENITIES`,
+    `On-property activities and what is included vs. extra. Off-property excursions. Activities that book up fast. Family programming. Any activity guests consistently highlight?`,
+    ``,
+    `8. PRACTICAL LOGISTICS & INSIDER TIPS`,
+    `Airport transfer options, times, costs. Check-in and check-out times — early/late strategies. What is included vs. resort fees? Tipping culture. Best time of year to visit. What to request before arrival. What to bring. Any quirks, limitations, or honest downsides.`,
+    ``,
+    `Be as specific as possible. Use real room names, real dish names, real pricing where available, real guest experiences. This research goes directly to Claude AI to write a luxury concierge property guide.`
+  );
+  return lines.join("\n");
+}
+
+function buildClaudePrompt(form, voiceId) {
+  const prop = form.propertyName.trim();
+  const dest = form.destination.trim();
+  if (!prop && !dest) return null;
+  const propFull = prop && dest ? `${prop}, ${dest}` : prop || dest;
+  const voice = VOICES.find(v => v.id === voiceId) || VOICES[0];
+  const details = [];
+  if (form.clientName)  details.push(`Client name: ${form.clientName}`);
+  if (form.agentName)   details.push(`Travel advisor name: ${form.agentName}`);
+  if (prop)             details.push(`Property name: ${prop}`);
+  if (dest)             details.push(`Location: ${dest}`);
+  if (form.travelDates) details.push(`Travel dates: ${form.travelDates}`);
+  if (form.roomType)    details.push(`Room/suite category: ${form.roomType}`);
+  const researchBlock = form.researchPaste.trim()
+    ? `\n\n--- PERPLEXITY RESEARCH (use this heavily) ---\n${form.researchPaste.trim()}\n--- END RESEARCH ---`
+    : "";
+  return `You are a senior travel advisor at Point Me to Paradise Travel. Write a practical, scannable, client-ready property guide about ${propFull}. This is a guide — not a novel. Clients will use this before and during their stay to quickly find what they need.
+
+WRITING VOICE:
+${voice.prompt}
+
+Apply this voice to the opening note, section intro lines, and standout recommendation hooks. Keep the overall format tight and scannable — think great hotel concierge briefing, not travel essay.
+
+FORMATTING PHILOSOPHY — NON-NEGOTIABLE:
+- Lead every recommendation with the NAME in bold, then key details
+- 1 to 2 sentences of vivid color per item — no paragraph-length entries
+- All practical info (cost, timing, booking, tip) goes in bullets under the item
+- Save flowing prose ONLY for the opening note and final word
+- A client should open any section and find what they need in under 10 seconds
+- Do not write walls of text — ever
+
+OUTPUT STRUCTURE — use these exact section headers:
+
+# A Personal Note
+2 to 3 short paragraphs. Warm, personal, in the advisor's voice. Use the client's name if provided. Reference the agent's name. Explain why this specific property was chosen for them — then let the guide do its job.
+
+## Why This Property
+One short vivid paragraph on the character and atmosphere of ${prop || "this property"}. Then bullet points:
+- **Best for:** type of traveler this suits
+- **Vibe:** design, atmosphere, scale
+- **Standout:** the one thing that sets it apart
+- **Honest note:** one limitation or thing to know going in
+
+## Your Room
+**[Room/Suite Category]** — one sentence on what makes it special.
+- Size and layout
+- View options and what to request
+- Bathroom: tub / shower / both
+- What to ask for at check-in (floor, location, specific features)
+- What is included vs. extra
+
+## Dining On Property
+For each restaurant, bar, or dining venue:
+**[Name]** — [cuisine / concept], [meal periods], [dress code if any]
+- Must-order: specific dishes or drinks
+- Vibe: one sentence
+- Tip: reservation needed / best time / insider note
+
+## The Pool & Beach
+- **Number of pools and layout:** ...
+- **Beach situation:** private / semi-private / shared
+- **Chair strategy:** when to arrive, how to secure a spot, cabana cost
+- **Best spot:** where locals and regulars go
+- **Swim-up bar / adults-only area:** yes or no, details
+- **Hidden gem:** any outdoor space most guests miss
+
+## Spa & Wellness
+For each treatment or facility:
+**[Treatment or Area Name]** — what it is, what makes it worth it
+- Duration and approximate cost
+- Book: how far in advance
+- Tip: any insider note
+
+**Fitness:** hours, equipment quality, classes available
+
+## Activities & Excursions
+Group as: On Property / Off Property
+For each:
+**[Activity]** — what it is, why it's worth your time
+- Included or extra cost
+- Book ahead? How far?
+- Best for: couples / families / solo
+- [View on Map](https://maps.google.com/?q=Activity+Name+${dest}) where relevant for off-property excursions
+
+## Know Before You Go
+Quick-reference bullets under bold labels:
+**Check-in / Check-out:** times and how to request early or late
+**Tipping:** norms at this property
+**What's Included:** in the rate vs. resort fees
+**Pre-Arrival Requests:** what to send ahead (pillows, dietary needs, celebrations)
+**Best Contact:** who to reach and how
+**What to Bring:** that the property doesn't provide
+**Honest Limitations:** things guests are surprised by
+
+## A Final Word
+2 to 3 sentences. Warm, personal close. Reinforce why this is the right choice. Mention Point Me to Paradise Travel. Sign off with agent's name if provided.
+
+STRICT RULES:
+- Never write more than 3 sentences of prose in a row outside opening and closing sections
+- Every recommendation must have its name bolded
+- Every practical detail goes in a bullet — never buried in a sentence
+- Use ALL the research provided — present it in scannable format, not paragraphs
+- Do not pad, do not repeat, do not add filler phrases
+- Brand the guide for Point Me to Paradise Travel
+
+TRIP DETAILS:
+${details.join("\n")}${researchBlock}
+
+Write the complete property guide now."
 }
 
 const css = `
