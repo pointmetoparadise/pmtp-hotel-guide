@@ -197,26 +197,22 @@ SECTION STRUCTURE:
 
 ## Service & Insider Tips
 
-**Before You Arrive**
-- **Pre-arrival request:** [what to ask and how — call vs. app]
-- **Special occasion:** [how to flag and what the property does]
-- **Spa:** [book X weeks ahead]
-- **Dining:** [which venues need reservations]
+Only include information that appears directly in the research provided. Do NOT invent phone numbers, booking windows, specific dollar amounts, or policies that are not in the research. If the research does not cover a sub-topic below, skip it entirely rather than guessing.
+
+**Before You Arrive — Pre-Arrival Checklist**
+[Only if confirmed in research] Include what the client should do, prepare, or request before arrival — such as: submitting room preferences, flagging special occasions, booking spa appointments, reserving dining. Do NOT include phone numbers, booking platform advice, "book direct vs. OTA" guidance, or any agent-side operational instructions. This section is for the client, not the agent.
 
 **At Check-In**
-- **Official time:** [check-in time + strategy for early arrivals]
-- **Room request:** [exact language to use at the desk]
-- **Loyalty program:** [how status helps here]
+[Only if confirmed in research] Include: official check-in time, early check-in strategy, what to say at the desk for room requests, how loyalty status applies here.
 
 **During Your Stay**
-- **Tipping:** [who, how much, when]
-- **Best contact:** [concierge / butler / who to reach for what]
+[Only if confirmed in research] Include: tipping norms specific to this property, who to contact for what, any operational quirks worth knowing.
 
 **Check-Out**
-- **Official time:** [time + late check-out strategy]
+[Only if confirmed in research] Include: official check-out time, late check-out strategy.
 
 **Honest Limitations**
-- [real downsides stated directly — room size, beach access, service gaps]
+[Only if confirmed in research] State real downsides directly — room size, beach access, service gaps, noise, value concerns. Do not soften or omit.
 
 ## A Final Word
 3-4 sentences. Warm, personal, in the selected voice. Reinforce why this property is right for them. Mention Point Me to Paradise Travel. Sign off with the agent name if provided.
@@ -230,6 +226,8 @@ STRICT RULES:
 - Every practical detail in a bullet or table — never buried in prose
 - Include ALL research — organized, not compressed
 - NEVER introduce yourself by name in the opening — the client knows who you are
+- NEVER invent phone numbers, booking URLs, specific prices, policies, or operational details not present in the research — if it is not in the research, skip it or write that the client should confirm directly with the property
+- NEVER include booking platform advice, 'book direct vs. OTA' guidance, or hotel contact information — that is agent-side operational information and does not belong in a client-facing guide
 - Brand the guide for Point Me to Paradise Travel
 - Sign off with the agent name in the Final Word only
 
@@ -315,6 +313,31 @@ const css=`
   .delivery-box ol{padding-left:18px;margin-top:6px;}
   .delivery-box li{margin-bottom:5px;}
   .delivery-box strong{color:#162d42;}
+
+  /* ── RESEARCH TOOL SELECTOR ── */
+  .research-tools { display: flex; gap: 10px; margin: 14px 0 0; flex-wrap: wrap; }
+  .research-tool-btn { flex: 1; min-width: 120px; padding: 11px 10px 9px; border-radius: 8px; border: 1.5px solid #ddd5c0; background: #fff; cursor: pointer; text-align: center; transition: all 0.15s; -webkit-tap-highlight-color: transparent; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; }
+  .research-tool-btn:hover { border-color: #3a9a9a; background: #e0f5f5; }
+  .research-tool-icon { font-size: 20px; line-height: 1; }
+  .research-tool-name { font-family: Georgia, serif; font-size: 11px; font-weight: bold; color: #162d42; letter-spacing: 0.04em; }
+  .research-tool-tag { font-size: 9px; color: #7a6e5f; text-transform: uppercase; letter-spacing: 0.08em; }
+  .research-instructions { margin-top: 14px; border-radius: 7px; overflow: hidden; border: 1px solid #ddd5c0; }
+  .research-instr-row { display: flex; gap: 0; border-bottom: 1px solid #ddd5c0; }
+  .research-instr-row:last-child { border-bottom: none; }
+  .research-instr-tool { width: 110px; flex-shrink: 0; background: #f5f0e6; padding: 10px 12px; font-family: Georgia, serif; font-size: 10px; font-weight: bold; color: #3a9a9a; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 6px; border-right: 1px solid #ddd5c0; }
+  .research-instr-text { padding: 10px 14px; font-size: 12px; color: #162d42; line-height: 1.6; flex: 1; }
+  .research-instr-text strong { color: #162d42; }
+
+  .style-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+  .style-card{border:1.5px solid #ddd5c0;border-radius:8px;padding:14px 12px;cursor:pointer;background:#fff;transition:all 0.15s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;gap:4px;}
+  .style-card:hover{border-color:#3a9a9a;background:#e0f5f5;}
+  .style-card.selected{border-color:#3a9a9a;background:#e0f5f5;box-shadow:0 0 0 2px #3a9a9a;}
+  .style-card-top{display:flex;align-items:center;gap:8px;}
+  .style-icon{font-size:20px;line-height:1;}
+  .style-name{font-family:Georgia,serif;font-size:12px;font-weight:bold;color:#162d42;letter-spacing:0.04em;}
+  .style-tag{font-size:10px;color:#7a6e5f;font-style:italic;}
+  .style-swatches{display:flex;gap:4px;margin-top:6px;}
+  .style-swatch{width:16px;height:16px;border-radius:3px;border:1px solid rgba(0,0,0,0.08);}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 `;
 
@@ -324,8 +347,9 @@ export default function App(){
   const [copiedPerp,setCopiedPerp]=useState(false);
   const [copiedClaude,setCopiedClaude]=useState(false);
   const [guideText,setGuideText]=useState("");
-  const [exportFormat,setExportFormat]=useState("html");
+  const [exportFormat,setExportFormat]=useState("docx");
   const [copiedExport,setCopiedExport]=useState(false);
+  const [guideStyle,setGuideStyle]=useState("classic");
 
   const set=e=>setForm(f=>({...f,[e.target.name]:e.target.value}));
   const perpPrompt=buildPerplexityPrompt(form);
@@ -351,72 +375,153 @@ export default function App(){
   };
 
   function buildHTMLPrompt(text){
-    return `You are a document formatter for Point Me to Paradise Travel. Take the property guide below and output a complete, valid, beautifully styled HTML file. Do NOT change, summarize, reorder, or alter any content. Every word must appear exactly as written. Only add HTML structure and styling.
+    return `Here is a property guide that needs to be formatted as a beautiful branded HTML file.
 
-BRAND COLORS (use ONLY these):
-#E9DEC0 cream, #DAC396 sand, #75AFB1 teal, #9AD0CE light teal, #C4E4E1 mint, #2a2219 dark, #f4f0e8 page background, #ffffff content area
+${text}
 
-FONTS: Google Fonts - Playfair Display for h1 and cover title, Lato for all other text.
+---
+
+Now format the above guide as a complete HTML file. Do NOT change, summarize, reorder, or alter any content. Every word exactly as written. Your only job is formatting.
+
+BRAND COLORS — use ONLY these: #E9DEC0 cream, #DAC396 sand, #75AFB1 teal, #9AD0CE light teal, #C4E4E1 mint, #2a2219 dark text, #f4f0e8 page background, #ffffff content area.
+
+FONTS: Google Fonts — Playfair Display for h1 and cover title, Lato for everything else.
 
 STRUCTURE:
 - Full valid HTML5 with DOCTYPE html head body
-- Cover: #E9DEC0 background, 4px solid #75AFB1 bottom border, PMTP dot logo, brand name, property name in large Playfair Display dark text, client byline in teal italic, sand rule at bottom
-- Guide body: white background, max-width 820px, centered, generous padding
-- h1: Playfair Display italic, dark, 2px solid #DAC396 border-bottom
-- h2: Lato uppercase, small tracking, #75AFB1, 1px solid #C4E4E1 border-bottom
-- Body: Lato 15px, dark, line-height 1.85
-- Tables: clean, bordered, teal header row
-- Bullets: light-teal markers
-- Links: #75AFB1 color, #9AD0CE underline
-- Footer: #E9DEC0 background, #DAC396 top border, "Point Me to Paradise Travel - Curating Expert Custom Trips"
+- Cover: #E9DEC0 background, 4px solid #75AFB1 bottom border, teal circle "P" logo, "Point Me to Paradise Travel" in teal uppercase Lato, property name in large Playfair Display dark, client byline in teal italic if present, agent name if present, #DAC396 rule at bottom
+- Body: #ffffff white, max-width 820px, centered, padding 56px 40px
+- # → h1: Playfair Display italic dark, 2px solid #DAC396 border-bottom
+- ## → h2: Lato uppercase #75AFB1, 1px solid #C4E4E1 border-bottom
+- Body text: Lato 15px #2a2219, line-height 1.85
+- Tables: teal header row (#75AFB1) white text, clean borders
+- Bullets: #9AD0CE markers
+- Links: #75AFB1 color #9AD0CE underline
+- Footer: #E9DEC0 background, #DAC396 top border, "Point Me to Paradise Travel · Curating Expert Custom Trips"
+- PAGE BREAKS: every section has break-inside:avoid; h1 and h2 have break-after:avoid
 
-PAGE BREAK RULES:
-- Every section: break-inside avoid, page-break-inside avoid
-- h1 and h2: break-after avoid, page-break-after avoid
-- Sections too long begin on new page, never split mid-section
+Output ONLY the complete HTML. No explanation, no markdown fences.`;
+  }
+    function buildDOCXPrompt(text){
+    return `Here is a property guide that needs to be formatted as a branded Word document.
 
-Output ONLY the complete HTML. No explanation, no markdown fences.
-
---- GUIDE CONTENT ---
 ${text}
---- END ---`;
+
+---
+
+Now format the above guide as a complete Word document using the docx npm library (v8.x). Do NOT change, summarize, reorder, or alter any content. Every word exactly as written. Your only job is formatting.
+
+COLORS (hex without #): 75AFB1 teal, DAC396 sand, C4E4E1 mint, 2a2219 dark, 9AD0CE light teal, E9DEC0 cream.
+
+SETUP: US Letter width 12240 height 15840 DXA. Margins top 1260 right 1260 bottom 1260 left 1440. Default Calibri size 22.
+
+COVER: "POINT ME TO PARADISE TRAVEL" Calibri 18 color 75AFB1 allCaps characterSpacing 80 after 120. Property name Georgia 64 bold color 75AFB1 after 180 border-bottom SINGLE size 12 DAC396. Client byline Georgia 24 italic 2a2219 after 60. Agent name Calibri 20 75AFB1 after 480.
+
+# headings: Georgia 40 bold italic 2a2219, keepNext true, before 480 after 200, border-bottom SINGLE size 8 DAC396.
+## headings: Calibri 22 bold allCaps 75AFB1, keepNext true, pageBreakBefore true, before 400 after 160, border-bottom SINGLE size 4 C4E4E1.
+Body: Calibri 22 2a2219, after 160, keepNext true except last paragraph before new section.
+Bullets: LevelFormat.BULLET "•" Calibri 22 2a2219, indent left 720 hanging 360, keepNext true between bullets.
+Tables: proper Table elements, header row 75AFB1 white bold.
+Footer: "Point Me to Paradise Travel · Curating Expert Custom Trips" Calibri 18 italic 75AFB1 centered, border-top SINGLE size 6 DAC396, before 720.
+
+PAGE FLOW RULES:
+- Add pageBreakBefore: true to every H2 heading — each major section always starts on its own page
+- Chain keepNext: true through all paragraphs within a section as a secondary safeguard against orphaned subheadings
+- Set keepNext: false only on the last item before the next H2 or end of document
+- Add keepLines: true to all body paragraphs to prevent single-line orphans within paragraphs
+- Do NOT attempt conditional page breaks — Word has no mechanism for "break only if needed" and any attempt will be unreliable, especially when tables are present in the section
+- Tables break the keepNext chain — Word does not bridge keepNext from a paragraph across a Table into the paragraphs that follow it, so do not rely on keepNext alone to hold sections together when tables are present
+- Never use explicit PageBreak elements separate from pageBreakBefore on headings
+
+Output ONLY complete runnable JavaScript using Packer.toBuffer() saving to output.docx. No explanation, no markdown fences.`;
+  }
+    function buildEditorialHTMLPrompt(guideText) {
+    return `Here is a property guide that needs to be formatted as a rich, editorial branded HTML file.
+
+${guideText}
+
+---
+
+You are a professional travel document designer for Point Me to Paradise Travel. The content above has already been written and researched. Your job is ONLY to render it into a polished, beautifully formatted branded document. Do not rewrite, summarize, reorganize, or add to the content. Render it exactly as provided.
+
+BRAND SPECIFICATIONS:
+Agency: Point Me to Paradise Travel | Tagline: Curated Journeys · Expert Advisors
+Colors: #FFFFFF page background, #75AFB1 header/footer bands, #DAC396 gold accents, #9AD0CE secondary accent, #C4E4E1 soft backgrounds, #E9DEC0 warm cream, #C8975A amber notices with #FDF3E3 background, #2C2C2C dark text, #4A6070 secondary text
+Fonts: Georgia serif for ALL headings, property names, section titles, pull quotes, labels. Arial sans-serif for ALL body text, descriptions, amenity lists, practical details.
+
+DESIGN DIRECTION — HOTEL & RESORT GUIDE:
+Elegant, editorial. Think high-end travel magazine meets trusted advisor. Not a brochure. A guide that feels curated and personal.
+
+HEADER every page: #75AFB1 band — agency name left Georgia white bold, guide title right in #DAC396 gold badge uppercase. 5px #DAC396 gold bar below.
+
+FOOTER every page: #75AFB1 band — agent name in #DAC396 Georgia left, "Curated Journeys · Expert Advisors" center italic pale teal, page number right.
+
+COVER PAGE: Full-width #75AFB1 teal hero band — property name large white Georgia, destination below in #DAC396 italic. Prepared for [client name] in elegant layout. Agent name right-aligned.
+
+PROPERTY OVERVIEW: #DAC396 gold rule above section title. Property name Georgia 20-22px navy. Location, category as small #9AD0CE teal pill badges. Key details (check-in, check-out, room category) in #C4E4E1 pale teal detail grid — Georgia uppercase label, Arial bold value. 2-3 sentence positioning statement in #E9DEC0 cream left-bordered pull quote.
+
+ROOM & SUITE SECTION: Each room type — teal left accent bar, room name Georgia bold, description Arial body.
+
+AMENITIES & EXPERIENCES: Two or three column layout. #75AFB1 teal dot bullets. Grouped by category (Dining, Spa, Beach, Activities) with small Georgia uppercase category label in #4A6070.
+
+PRACTICAL INFORMATION: Clean table — Georgia uppercase labels, Arial values. Subtle #9AD0CE borders.
+
+IMPORTANT NOTICES: #C8975A amber left border, #FDF3E3 background.
+
+CLOSING: #C4E4E1 pale teal outer box, white inner box, #75AFB1 left border. Full closing exactly as written, then agent contact card in #75AFB1 teal rounded block.
+
+PAGE BREAK RULES: Never split a section across two pages. If a section cannot fit completely on the current page, move the entire section to the next page. Every section wrapper: break-inside:avoid; page-break-inside:avoid. h1 and h2: break-after:avoid.
+
+Output ONLY the complete self-contained HTML file. No explanation, no markdown code fences.`;
   }
 
-  function buildDOCXPrompt(text){
-    return `You are a document formatter for Point Me to Paradise Travel. Take the property guide below and output complete JavaScript code using the docx npm library (v8.x) that generates a branded Word document. Do NOT change any content. Every word exactly as written.
+    function buildEditorialDOCXPrompt(guideText) {
+    return `Here is a property guide that needs to be formatted as a rich, editorial branded Word document.
 
-BRAND COLORS (hex without #):
-75AFB1 teal, DAC396 sand, C4E4E1 mint, 2a2219 dark, 9AD0CE light teal, E9DEC0 cream
+${guideText}
 
-DOCUMENT SETUP:
-- US Letter: width 12240 height 15840 DXA
-- Margins: top 1260 right 1260 bottom 1260 left 1440
-- Default: Calibri size 22
+---
 
-COVER: Brand name in Calibri 18 teal allCaps. Property name Georgia 64 bold teal with sand border-bottom. Client byline Georgia 24 italic dark. Agent name Calibri 20 teal.
+You are a professional travel document designer for Point Me to Paradise Travel. The content above has already been written and researched. Your job is ONLY to render it into a polished, beautifully formatted branded document using the docx npm library (v8.x). Do not rewrite, summarize, reorganize, or add to the content. Render it exactly as provided.
 
-STYLES:
-- h1: Georgia 40 bold italic dark, keepNext true, sand border-bottom SINGLE size 8
-- h2: Calibri 22 bold allCaps teal, keepNext true, mint border-bottom SINGLE size 4
-- Body: Calibri 22 dark, spacing after 160, keepNext true except last paragraph of section
-- Bullets: LevelFormat.BULLET with bullet char, Calibri 22 dark, indent left 720 hanging 360
-- Footer: Calibri 18 italic teal centered, sand border-top SINGLE size 6
+BRAND COLORS (hex without #): 75AFB1 teal, DAC396 gold, 9AD0CE light teal, C4E4E1 pale teal, E9DEC0 warm cream, C8975A amber, 2C2C2C dark text, 4A6070 secondary text, FFFFFF white.
+Fonts: Georgia serif for headings, property names, labels, pull quotes. Arial/Calibri sans-serif for body text, descriptions, amenity lists.
 
-PAGE BREAK RULES (critical):
-- Every h2 must have keepNext true - never orphaned at bottom of page
-- Body paragraphs before a heading: keepNext true
-- Last paragraph of each section: keepNext false
-- Never use explicit PageBreak elements
+DOCUMENT SETUP: US Letter width 12240 height 15840 DXA. Margins top 1440 right 1080 bottom 1440 left 1080.
 
-Output ONLY complete runnable JavaScript using Packer.toBuffer() saving to output.docx. No explanation, no markdown fences.
+COVER PAGE: Full-width 75AFB1 header block — property name Georgia 48 bold white. Destination Georgia 22 italic DAC396. "Prepared for [client]" label/value layout. Agent name right-aligned.
 
---- GUIDE CONTENT ---
-${text}
---- END ---`;
+HEADER on every page: 75AFB1 background — agency name left Georgia 10 white bold, guide title right Georgia 10 DAC396 uppercase. 5px DAC396 rule below.
+
+FOOTER on every page: 75AFB1 background — agent name left DAC396 Georgia, "Curated Journeys · Expert Advisors" center italic pale teal, page number right.
+
+SECTION HEADINGS (## in guide): Georgia 14 bold navy 162d42, allCaps, DAC396 gold rule above, keepNext true, pageBreakBefore true.
+SECTION BODY: Arial/Calibri 11, color 2C2C2C, keepNext true except last paragraph per section, keepLines true on all body paragraphs.
+
+PROPERTY OVERVIEW: C4E4E1 shaded key details grid — Georgia uppercase 9 labels, Arial bold 11 values. E9DEC0 shaded pull quote with DAC396 left border 4px.
+
+ROOM BLOCKS: Each room type — 75AFB1 left border 3px, room name Georgia 13 bold, description Arial 11.
+
+AMENITIES: Two-column layout with Georgia uppercase 9 category labels in 4A6070. 75AFB1 teal bullets.
+
+PRACTICAL INFO TABLE: Two columns, Georgia uppercase labels, Arial values, 9AD0CE borders.
+
+CLOSING BLOCK: C4E4E1 outer shading, white inner, 75AFB1 left border 4px. Full closing then agent contact in 75AFB1 shaded block.
+
+PAGE FLOW RULES:
+- Add pageBreakBefore: true to every H2 heading — each major section always starts on its own page
+- Chain keepNext: true through all paragraphs within a section as a secondary safeguard against orphaned subheadings
+- Set keepNext: false only on the last item before the next H2 or end of document
+- Add keepLines: true to all body paragraphs to prevent single-line orphans within paragraphs
+- Do NOT attempt conditional page breaks — Word has no mechanism for "break only if needed" and any attempt will be unreliable, especially when tables are present in the section
+- Tables break the keepNext chain — Word does not bridge keepNext from a paragraph across a Table into the paragraphs that follow it, so do not rely on keepNext alone to hold sections together when tables are present
+- Never use explicit PageBreak elements separate from pageBreakBefore on headings
+
+Output ONLY complete runnable JavaScript using Packer.toBuffer() saving to output.docx. No explanation, no markdown code fences.`;
   }
 
-  function handleCopyExportPrompt(){
-    const prompt=exportFormat==="html"?buildHTMLPrompt(guideText):buildDOCXPrompt(guideText);
+    function handleCopyExportPrompt(){
+    const prompt=exportFormat==="html"?(guideStyle==="editorial"?buildEditorialHTMLPrompt(guideText):buildHTMLPrompt(guideText)):(guideStyle==="editorial"?buildEditorialDOCXPrompt(guideText):buildDOCXPrompt(guideText));
     copy(prompt,setCopiedExport);
   }
 
@@ -466,18 +571,47 @@ ${text}
             <div className="step-num">2</div>
             <div className="step-head-text">
               <div className="step-title">Copy Perplexity Research Prompt</div>
-              <div className="step-sub">Paste into Perplexity Deep Research for thorough property intelligence</div>
+              <div className="step-sub">Run in Perplexity, Claude, or ChatGPT — then paste results in Step 3</div>
             </div>
             <span className={`step-badge ${hasDetails?"ready":"pending"}`}>{hasDetails?"Ready to Copy":"Enter property first"}</span>
           </div>
           <div className="card-body">
-            <div className="prompt-label">Perplexity Deep Research Prompt</div>
+            <div className="prompt-label">Research Prompt — Copy &amp; Run in Your AI Tool of Choice</div>
             <div className="prompt-box">{perpPrompt?perpPrompt:<span className="prompt-empty">Enter a property name in Step 1 and your research prompt will appear here.</span>}</div>
             <div className="prompt-actions">
               <button className={`btn-copy${copiedPerp?" copied":""}`} onClick={()=>perpPrompt&&copy(perpPrompt,setCopiedPerp)} disabled={!perpPrompt}>{copiedPerp?"✓ Copied!":"⎘ Copy Prompt"}</button>
-              <a className="btn-link" href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer">Open Perplexity ↗</a>
             </div>
-            <div className="tip"><span className="tip-label">How to run this</span>Open Perplexity → new search → switch to <strong>Deep Research</strong> mode → paste → run. Pulls from guest reviews, travel blogs, loyalty forums, and live sources.</div>
+            <div className="research-tools">
+              <a className="research-tool-btn" href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer">
+                <span className="research-tool-icon">🔍</span>
+                <span className="research-tool-name">Perplexity</span>
+                <span className="research-tool-tag">Best results</span>
+              </a>
+              <a className="research-tool-btn" href="https://claude.ai" target="_blank" rel="noopener noreferrer">
+                <span className="research-tool-icon">🤖</span>
+                <span className="research-tool-name">Claude</span>
+                <span className="research-tool-tag">Great depth</span>
+              </a>
+              <a className="research-tool-btn" href="https://chat.openai.com" target="_blank" rel="noopener noreferrer">
+                <span className="research-tool-icon">💬</span>
+                <span className="research-tool-name">ChatGPT</span>
+                <span className="research-tool-tag">Works well</span>
+              </a>
+            </div>
+            <div className="research-instructions">
+              <div className="research-instr-row">
+                <div className="research-instr-tool">🔍 Perplexity</div>
+                <div className="research-instr-text"><strong>Best option.</strong> Go to perplexity.ai → new search → switch to <strong>Deep Research</strong> mode → paste the prompt → run. Searches live web, guest reviews, travel blogs, and loyalty forums in real time. Paste the full response in Step 3.</div>
+              </div>
+              <div className="research-instr-row">
+                <div className="research-instr-tool">🤖 Claude</div>
+                <div className="research-instr-text"><strong>Great depth.</strong> Go to claude.ai → new conversation → paste the prompt. Add this line first: <strong>"Please research this thoroughly — go deep, be specific, use real names, prices, and details."</strong> Paste the full response in Step 3.</div>
+              </div>
+              <div className="research-instr-row">
+                <div className="research-instr-tool">💬 ChatGPT</div>
+                <div className="research-instr-text"><strong>Works well.</strong> Go to chat.openai.com → new chat → enable <strong>Search</strong> if available → paste the prompt. Add: <strong>"Use web search and be as specific and detailed as possible."</strong> Paste the full response in Step 3.</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -495,7 +629,7 @@ ${text}
           </div>
           <div className="card-body">
             <p className="paste-hint">Paste the <strong>complete Perplexity response</strong> — do not trim or edit it. Claude will read through everything and pull the best details into the guide.</p>
-            <textarea name="researchPaste" value={form.researchPaste} onChange={set} placeholder="Paste the full Perplexity Deep Research response here..." style={{minHeight:160}}/>
+            <textarea name="researchPaste" value={form.researchPaste} onChange={set} placeholder="Paste the full research response here — from Perplexity, Claude, or ChatGPT. Do not trim or edit it." style={{minHeight:160}}/>
           </div>
         </div>
 
@@ -537,6 +671,29 @@ ${text}
               <a className="btn-link" href="https://claude.ai" target="_blank" rel="noopener noreferrer">Open Claude ↗</a>
             </div>
             <div className="tip"><span className="tip-label">How to use this</span>Go to <strong>claude.ai</strong> → new conversation → paste the full prompt → Claude generates a complete, PMTP-branded property guide in the voice you selected.</div>
+            <div style={{marginTop:16,borderRadius:9,overflow:"hidden",border:"2px solid #c9a84c"}}>
+              <div style={{background:"#162d42",padding:"12px 18px",display:"flex",alignItems:"center",gap:12}}>
+                <span style={{fontSize:22}}>🛑</span>
+                <span style={{fontFamily:"Georgia, serif",fontSize:13,letterSpacing:"0.1em",textTransform:"uppercase",color:"#c9a84c",fontWeight:"bold"}}>Stop — Before You Move to Step 5</span>
+              </div>
+              <div style={{background:"#f5e9c8",padding:"16px 18px"}}>
+                <p style={{fontSize:13,color:"#162d42",lineHeight:1.7,marginBottom:10}}>
+                  <strong>Did you ask your AI to do a full fact-check before you copy the guide?</strong> This is an important step that protects your clients and your reputation.
+                </p>
+                <p style={{fontSize:12,color:"#5a4a2a",lineHeight:1.65,marginBottom:12}}>
+                  AI can confidently present outdated hours, closed restaurants, incorrect prices, and changed policies as current fact. A quick fact-check challenge catches these before your client does.
+                </p>
+                <div style={{background:"#162d42",borderRadius:7,padding:"13px 16px",marginBottom:12}}>
+                  <div style={{fontFamily:"Georgia, serif",fontSize:9,letterSpacing:"0.12em",textTransform:"uppercase",color:"#c9a84c",marginBottom:7}}>Copy &amp; Send This to Your AI Before Moving On</div>
+                  <div style={{fontSize:12,color:"#d8ceb8",lineHeight:1.7,fontStyle:"italic"}}>
+                    "Before I use this guide, please do a full fact-check sweep. Flag anything that may be outdated, unverifiable, or potentially inaccurate — including restaurant hours, prices, policies, property details, and any specific claims. Note your confidence level on each flagged item and suggest corrections where possible."
+                  </div>
+                </div>
+                <p style={{fontSize:11,color:"#7a6e5f",lineHeight:1.6}}>
+                  Review any flags, update the guide as needed, <strong>then</strong> copy and paste into Step 5.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -557,23 +714,53 @@ ${text}
               <label className="field-label">Step 5a — Paste Your Completed Claude Guide Here</label>
               <textarea value={guideText} onChange={e=>setGuideText(e.target.value)} placeholder="Go to your Claude conversation, copy the full property guide that was generated, and paste it here. Do not edit it." style={{minHeight:180}}/>
             </div>
-            <div className="field-label" style={{marginBottom:10}}>Step 5b — Choose Your Export Format</div>
-            <div className="format-grid">
+            <div className="field-label" style={{marginBottom:10}}>Step 5b — Choose Export Format</div>
+            <div className="format-grid" style={{marginBottom:16}}>
               <div className={`format-card${exportFormat==="html"?" selected":""}`} onClick={()=>setExportFormat("html")}>
                 <div className="format-icon">🌐</div>
                 <div className="format-name">HTML Guide</div>
-                <div className="format-desc">Beautiful, branded, browser-ready. Share via email, Drive, or WeTransfer.</div>
+                <div className="format-desc">Browser-ready. Share via email, Drive, or WeTransfer.</div>
               </div>
               <div className={`format-card${exportFormat==="docx"?" selected":""}`} onClick={()=>setExportFormat("docx")}>
                 <div className="format-icon">📄</div>
                 <div className="format-name">Word Doc → PDF</div>
-                <div className="format-desc">Claude formats into a Word doc. Open in Word, Save As PDF, then send.</div>
+                <div className="format-desc">Open in Word, Save As PDF, then send.</div>
               </div>
             </div>
-            <div className="prompt-label">Step 5c — Your {exportFormat==="html"?"HTML":"DOCX"} Formatting Prompt for Claude</div>
+
+            <div className="field-label" style={{marginBottom:10}}>Step 5c — Choose Guide Style</div>
+            <div className="style-grid" style={{marginBottom:18}}>
+              <div className={`style-card${guideStyle==="classic"?" selected":""}`} onClick={()=>setGuideStyle("classic")}>
+                <div className="style-card-top">
+                  <span className="style-icon">🎯</span>
+                  <span className="style-name">Classic</span>
+                </div>
+                <div className="style-tag">Clean · minimal · brand-consistent</div>
+                <div className="style-swatches">
+                  <div className="style-swatch" style={{background:"#E9DEC0"}}/>
+                  <div className="style-swatch" style={{background:"#75AFB1"}}/>
+                  <div className="style-swatch" style={{background:"#DAC396"}}/>
+                  <div className="style-swatch" style={{background:"#ffffff",border:"1px solid #ddd"}}/>
+                </div>
+              </div>
+              <div className={`style-card${guideStyle==="editorial"?" selected":""}`} onClick={()=>setGuideStyle("editorial")}>
+                <div className="style-card-top">
+                  <span className="style-icon">✨</span>
+                  <span className="style-name">Editorial</span>
+                </div>
+                <div className="style-tag">Rich · magazine-style · full color</div>
+                <div className="style-swatches">
+                  <div className="style-swatch" style={{background:"#75AFB1"}}/>
+                  <div className="style-swatch" style={{background:"#DAC396"}}/>
+                  <div className="style-swatch" style={{background:"#C4E4E1"}}/>
+                  <div className="style-swatch" style={{background:"#E9DEC0"}}/>
+                </div>
+              </div>
+            </div>
+            <div className="prompt-label">Step 5d — Your Formatting Prompt for Claude</div>
             <div className="prompt-box tall">
               {guideText.trim()
-                ?(exportFormat==="html"?buildHTMLPrompt(guideText):buildDOCXPrompt(guideText))
+                ?(exportFormat==="html"?(guideStyle==="editorial"?buildEditorialHTMLPrompt(guideText):buildHTMLPrompt(guideText)):(guideStyle==="editorial"?buildEditorialDOCXPrompt(guideText):buildDOCXPrompt(guideText)))
                 :<span className="prompt-empty">Paste your guide above and choose a format — your formatting prompt will appear here.</span>
               }
             </div>
@@ -617,3 +804,6 @@ ${text}
     </>
   );
 }
+
+
+  
