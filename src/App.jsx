@@ -338,6 +338,29 @@ const css=`
   .style-tag{font-size:10px;color:#7a6e5f;font-style:italic;}
   .style-swatches{display:flex;gap:4px;margin-top:6px;}
   .style-swatch{width:16px;height:16px;border-radius:3px;border:1px solid rgba(0,0,0,0.08);}
+
+  .delivery-guide{background:#faf7f2;border:1px solid #ddd5c0;border-radius:9px;box-shadow:0 2px 16px rgba(22,45,66,0.07);margin-top:14px;overflow:hidden;animation:fadeUp 0.4s ease both;animation-delay:0.3s;}
+  .delivery-guide-head{background:#162d42;padding:14px 20px;display:flex;align-items:center;gap:12px;}
+  .delivery-guide-title{font-family:Georgia,serif;font-size:13px;letter-spacing:0.09em;text-transform:uppercase;color:#fff;line-height:1;}
+  .delivery-guide-sub{font-size:11px;color:#c9a84c;margin-top:3px;letter-spacing:0.04em;}
+  .delivery-methods{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+  @media(max-width:600px){.delivery-methods{grid-template-columns:1fr;}}
+  .delivery-method{padding:18px 20px;border-right:1px solid #ddd5c0;border-bottom:1px solid #ddd5c0;}
+  .delivery-method:nth-child(even){border-right:none;}
+  .delivery-method:nth-last-child(-n+2){border-bottom:none;}
+  @media(max-width:600px){.delivery-method{border-right:none;}.delivery-method:last-child{border-bottom:none;}}
+  .delivery-method-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .delivery-method-icon{font-size:18px;line-height:1;}
+  .delivery-method-name{font-family:Georgia,serif;font-size:12px;font-weight:bold;color:#162d42;letter-spacing:0.04em;}
+  .delivery-method-badge{font-size:9px;font-family:Georgia,serif;text-transform:uppercase;letter-spacing:0.08em;padding:2px 7px;border-radius:10px;background:#e0f5f5;color:#3a9a9a;border:1px solid #3a9a9a;margin-left:auto;}
+  .delivery-method-steps{font-size:12px;color:#162d42;line-height:1.65;padding-left:0;list-style:none;}
+  .delivery-method-steps li{padding-left:14px;position:relative;margin-bottom:4px;}
+  .delivery-method-steps li::before{content:'→';position:absolute;left:0;color:#3a9a9a;font-size:11px;}
+  .delivery-method-steps strong{color:#162d42;}
+  .delivery-method-steps a{color:#3a9a9a;text-decoration:none;font-weight:bold;}
+  .delivery-method-steps a:hover{text-decoration:underline;}
+  .delivery-note{padding:14px 20px;background:#f5e9c8;border-top:1px solid #ddd5c0;font-size:11px;color:#7a6e5f;line-height:1.6;}
+  .delivery-note strong{color:#162d42;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 `;
 
@@ -349,7 +372,7 @@ export default function App(){
   const [guideText,setGuideText]=useState("");
   const [exportFormat,setExportFormat]=useState("docx");
   const [copiedExport,setCopiedExport]=useState(false);
-  const [guideStyle,setGuideStyle]=useState("classic");
+  const [guideStyle,setGuideStyle]=useState("editorial");
 
   const set=e=>setForm(f=>({...f,[e.target.name]:e.target.value}));
   const perpPrompt=buildPerplexityPrompt(form);
@@ -456,7 +479,17 @@ HEADER every page: #75AFB1 band — agency name left Georgia white bold, guide t
 
 FOOTER every page: #75AFB1 band — agent name in #DAC396 Georgia left, "Curated Journeys · Expert Advisors" center italic pale teal, page number right.
 
-COVER PAGE: Full-width #75AFB1 teal hero band — property name large white Georgia, destination below in #DAC396 italic. Prepared for [client name] in elegant layout. Agent name right-aligned.
+COVER PAGE:
+  Two-row teal masthead bar at top — agency name left Georgia 10 bold white, guide title right Georgia 10 DAC396 uppercase, 3pt DAC396 bottom border.
+  Open white canvas below with generous top spacing.
+  Small all-caps label line: Georgia 9 teal 75AFB1 letter-spacing 0.18em — "A Personal Travel Guide by Point Me to Paradise Travel".
+  Property or destination name: Georgia 60 bold color 75AFB1 — allow to wrap naturally across two lines. Gold DAC396 rule below the name.
+  Destination or region line: Georgia 12 italic color 4A6070 below the gold rule.
+  Warm cream E9DEC0 three-column strip near bottom of cover:
+    Left column — label "Prepared For" Georgia 9 uppercase 4A6070 with letter-spacing, value Georgia 14 bold 2C2C2C left-aligned.
+    Center column — label "Travel Dates" Georgia 9 uppercase 4A6070, value Georgia 14 bold 2C2C2C center-aligned.
+    Right column — label "Your Advisor" Georgia 9 uppercase 4A6070, value Georgia 14 bold 2C2C2C right-aligned.
+  Full-width teal footer bar at bottom of cover — agency name left Georgia 10 bold white, tagline right Georgia 9 italic DAC396.
 
 PROPERTY OVERVIEW: #DAC396 gold rule above section title. Property name Georgia 20-22px navy. Location, category as small #9AD0CE teal pill badges. Key details (check-in, check-out, room category) in #C4E4E1 pale teal detail grid — Georgia uppercase label, Arial bold value. 2-3 sentence positioning statement in #E9DEC0 cream left-bordered pull quote.
 
@@ -471,6 +504,8 @@ IMPORTANT NOTICES: #C8975A amber left border, #FDF3E3 background.
 CLOSING: #C4E4E1 pale teal outer box, white inner box, #75AFB1 left border. Full closing exactly as written, then agent contact card in #75AFB1 teal rounded block.
 
 PAGE BREAK RULES: Never split a section across two pages. If a section cannot fit completely on the current page, move the entire section to the next page. Every section wrapper: break-inside:avoid; page-break-inside:avoid. h1 and h2: break-after:avoid.
+
+Brand rule: Client-facing documents use teal 75AFB1, gold DAC396, warm cream E9DEC0, pale teal C4E4E1, amber C8975A, and secondary text 4A6070 only. Do not introduce any other colors.
 
 Output ONLY the complete self-contained HTML file. No explanation, no markdown code fences.`;
   }
@@ -489,7 +524,17 @@ Fonts: Georgia serif for headings, property names, labels, pull quotes. Arial/Ca
 
 DOCUMENT SETUP: US Letter width 12240 height 15840 DXA. Margins top 1440 right 1080 bottom 1440 left 1080.
 
-COVER PAGE: Full-width 75AFB1 header block — property name Georgia 48 bold white. Destination Georgia 22 italic DAC396. "Prepared for [client]" label/value layout. Agent name right-aligned.
+COVER PAGE:
+  Top masthead: 75AFB1 teal band — agency name left Georgia 10 bold white, guide title right Georgia 10 DAC396 uppercase, 3pt DAC396 bottom border.
+  White canvas below with generous top padding.
+  Small all-caps label: Georgia 9 75AFB1 letter-spacing 60 (characterSpacing) — "A PERSONAL TRAVEL GUIDE BY POINT ME TO PARADISE TRAVEL".
+  Destination or property name: Georgia 60 bold color 75AFB1 — allow natural line wrapping. Gold DAC396 bottom border rule below name paragraph.
+  Region or destination sub-line: Georgia 12 italic 4A6070.
+  Warm cream E9DEC0 three-column info strip near bottom of cover — use a Table with 3 columns and E9DEC0 shading:
+    Left cell: label "PREPARED FOR" Georgia 9 uppercase 4A6070 characterSpacing 40, value Georgia 14 bold 2C2C2C, left-aligned.
+    Center cell: label "TRAVEL DATES" Georgia 9 uppercase 4A6070, value Georgia 14 bold 2C2C2C, centered.
+    Right cell: label "YOUR ADVISOR" Georgia 9 uppercase 4A6070, value Georgia 14 bold 2C2C2C, right-aligned.
+  Full-width teal footer bar: 75AFB1 background — agency name left Georgia 10 bold white, tagline right Georgia 9 italic DAC396.
 
 HEADER on every page: 75AFB1 background — agency name left Georgia 10 white bold, guide title right Georgia 10 DAC396 uppercase. 5px DAC396 rule below.
 
@@ -516,6 +561,8 @@ PAGE FLOW RULES:
 - Do NOT attempt conditional page breaks — Word has no mechanism for "break only if needed" and any attempt will be unreliable, especially when tables are present in the section
 - Tables break the keepNext chain — Word does not bridge keepNext from a paragraph across a Table into the paragraphs that follow it, so do not rely on keepNext alone to hold sections together when tables are present
 - Never use explicit PageBreak elements separate from pageBreakBefore on headings
+
+Brand rule: Client-facing documents use teal 75AFB1, gold DAC396, warm cream E9DEC0, pale teal C4E4E1, amber C8975A, and secondary text 4A6070 only. Do not introduce any other colors.
 
 Output ONLY complete runnable JavaScript using Packer.toBuffer() saving to output.docx. No explanation, no markdown code fences.`;
   }
@@ -800,6 +847,66 @@ Output ONLY complete runnable JavaScript using Packer.toBuffer() saving to outpu
           </div>
         </div>
 
+        {/* HTML DELIVERY GUIDE */}
+        <div className="delivery-guide">
+          <div className="delivery-guide-head">
+            <span style={{fontSize:22}}>📬</span>
+            <div>
+              <div className="delivery-guide-title">How to Deliver an HTML Guide to Your Client</div>
+              <div className="delivery-guide-sub">Free methods that actually work · No special software required</div>
+            </div>
+          </div>
+
+          <div style={{padding:"16px 20px 14px",borderBottom:"1px solid #ddd5c0",background:"#fff"}}>
+            <div style={{fontFamily:"Georgia, serif",fontSize:"10px",letterSpacing:"0.12em",textTransform:"uppercase",color:"#3a9a9a",marginBottom:8}}>First — Save the File Correctly</div>
+            <ol style={{paddingLeft:18,fontSize:12,color:"#162d42",lineHeight:1.7}}>
+              <li style={{marginBottom:4}}>After running the HTML prompt in Claude, <strong>select all of Claude's output</strong> — it will be a complete document starting with <code style={{background:"#f0ebe0",padding:"1px 5px",borderRadius:3,fontSize:11}}>&lt;!DOCTYPE html&gt;</code></li>
+              <li style={{marginBottom:4}}>Open <strong>Notepad</strong> (Windows) or <strong>TextEdit</strong> (Mac — go to Format → Make Plain Text first). Paste the HTML. Save the file as <strong>ClientName_Guide.html</strong> — the extension <em>must</em> be <strong>.html</strong></li>
+              <li>Double-click the saved file to open it in your browser. <strong>Test it before you send</strong> — if it looks great in your browser, the client will see the same thing.</li>
+            </ol>
+          </div>
+
+          <div style={{padding:"12px 20px",background:"#f5e9c8",borderBottom:"1px solid #ddd5c0"}}>
+            <span style={{fontFamily:"Georgia,serif",fontSize:"10px",letterSpacing:"0.1em",textTransform:"uppercase",color:"#8a6820",fontWeight:"bold"}}>⚠ What Does Not Work</span>
+            <p style={{fontSize:12,color:"#162d42",marginTop:6,lineHeight:1.6}}>Do <strong>not</strong> attach .html files to email — most email servers block them or clients cannot open them correctly. Do <strong>not</strong> try to send via text message. The methods below are what actually work reliably.</p>
+          </div>
+
+          <div className="delivery-methods">
+
+            <div className="delivery-method">
+              <div className="delivery-method-head">
+                <span className="delivery-method-icon">🔗</span>
+                <span className="delivery-method-name">Google Drive + TinyURL</span>
+                <span className="delivery-method-badge">Most reliable</span>
+              </div>
+              <ul className="delivery-method-steps">
+                <li>Go to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer">drive.google.com</a> → drag the .html file in to upload</li>
+                <li>Right-click the file → <strong>Share</strong> → <strong>Get link</strong> → set to <strong>"Anyone with the link can view"</strong> → copy the link</li>
+                <li>Go to <a href="https://tinyurl.com" target="_blank" rel="noopener noreferrer">tinyurl.com</a> → paste the Drive link → click <strong>Shorten URL</strong> → copy the short link</li>
+                <li>Paste the TinyURL into your email to the client — they click it, it opens directly in their browser. Clean, professional, no download needed.</li>
+              </ul>
+            </div>
+
+            <div className="delivery-method">
+              <div className="delivery-method-head">
+                <span className="delivery-method-icon">📦</span>
+                <span className="delivery-method-name">WeTransfer</span>
+                <span className="delivery-method-badge">Free · No account</span>
+              </div>
+              <ul className="delivery-method-steps">
+                <li>Go to <a href="https://wetransfer.com" target="_blank" rel="noopener noreferrer">wetransfer.com</a> — no account needed on the free plan</li>
+                <li>Click <strong>Add your files</strong> → upload the .html file</li>
+                <li>Enter the <strong>client's email address</strong> and your email address → click <strong>Transfer</strong></li>
+                <li>Client receives an email from WeTransfer with a download link — they click it, download the file, double-click to open in their browser. Link stays active for <strong>7 days</strong></li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div className="delivery-note">
+            <strong>Recommended workflow:</strong> Google Drive + TinyURL is the cleanest option — the guide opens directly in the client's browser without downloading anything, works on phone or desktop, and the short link looks professional in an email. WeTransfer is the best backup if you prefer the client to receive it via their own email rather than clicking a link.
+          </div>
+        </div>
       </div>
     </>
   );
